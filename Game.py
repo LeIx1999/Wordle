@@ -25,13 +25,11 @@ with open("wordle_duden.json", "w") as duden:
     json.dump(wordle_duden, duden, indent=2)
 
 # Function to check the accuracy of the input word
-def check_word(word, seed, duden):
+def check_word(word, randint, duden):
     occurrence_list = []
-    # set random seed
-    random.seed(seed)
+
 
     # find goal word
-    randint = random.randrange(0, len(duden))
     goal_word = duden[randint]
 
     for i in range(0, 5):
@@ -44,7 +42,7 @@ def check_word(word, seed, duden):
         else:
             occurrence_list.append(0)
 
-    return occurrence_list
+    return occurrence_list, goal_word
 
 check_word("franz", 3, wordle_duden)
 
