@@ -3,10 +3,10 @@ import json
 from tkinter import *
 import random
 import math
-import Game
+import game
 
 # create an instance of the class Game
-Game = Game.Game()
+Game = game.Game()
 
 # create root
 root = Tk()
