@@ -24,3 +24,7 @@ wordle_duden = list(filter(None, wordle_duden))
 with open("wordle_duden.json", "w") as duden:
     json.dump(wordle_duden, duden, indent=2)
 
+#%%
+[] * 2
+
+# %%

@@ -3,10 +3,10 @@ import json
 from tkinter import *
 import random
 import math
-import game
+import Game
 
 # create an instance of the class Game
-Game = game.Game()
+Game = Game.Game()
 
 # create root
 root = Tk()
@@ -21,21 +21,21 @@ Label(root, text = "WORDLE", font=("Times 50")).grid(row = 1, column=4)
 
 # Scoreboard
 # Player 1
-player_label_1 = Label(root, text="Spieler 1", font=("Times 40"), bg="#333333", width = 8, height=1)
+player_label_1 = Label(root, text="Spieler 1", font=("Times 40"), fg="#2ca115", width = 8, height=1)
 player_label_1.grid(row=2, column=1)
 
 score_label_1 = Label(root, text=Game.points_1, font=("Times 40"), bg="#333333", width = 2, height=1)
 score_label_1.grid(row=3, column=1)
 
 # Player 2
-player_label_1 = Label(root, text="Spieler 2", font=("Times 40"), bg="#333333", width = 8, height=1)
-player_label_1.grid(row=2, column=8)
+player_label_2 = Label(root, text="Spieler 2", font=("Times 40"), bg="#333333", width = 8, height=1)
+player_label_2.grid(row=2, column=8)
 
 score_label_2 = Label(root, text=Game.points_2, font=("Times 40"), bg="#333333", width = 2, height=1)
 score_label_2.grid(row=3, column=8)
 
 # Round
-iter_label = Label(root, text=f'Runde: {iter}', font=("Times 40"), bg="#333333", width = 8, height=1)
+iter_label = Label(root, text=f'Runde: {Game.iter}', font=("Times 40"), bg="#333333", width = 8, height=1)
 iter_label.grid(row=2, column=4)
 
 # Mainframe
@@ -89,7 +89,8 @@ entry_label = Label(image=entry_image)
 
 # Entry button
 button_entry = Button(root, text="Guess", image= entry_image, borderwidth=0, bd = 0, command= lambda: Game.enter_word(Entry_list,
-                        Label_list, iter_label, score_label_1, score_label_2, root)).grid(row=6, column=4)
+                        Label_list, iter_label, score_label_1, score_label_2, player_label_1, player_label_2, root)).grid(row=6, column=4)
 
 # Mainloop
 root.mainloop()
+

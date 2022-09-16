@@ -2,7 +2,7 @@ import json
 import random
 import math
 from tkinter import *
-
+import re
 # Define class Game
 class Game:
     def __init__(self) -> None:
@@ -34,12 +34,12 @@ class Game:
                     1: "gold",
                     0: "darkred"}
 
-    def _enter_word(self, Entry_list, Label_list, iter_label, score_label_1, score_label_2, root):
+    def enter_word(self, Entry_list: list, Label_list: list, iter_label: Label, score_label_1: Label, score_label_2: Label, player_label_1: Label, player_label_2: Label,root: Tk) -> int: 
         self.row_chars = []
 
-        # go to next word and delete entry text
+        # check if the word was correct or there are no guesses left
         if self.hits == [2, 2, 2, 2, 2] or self.guess_numb == 6:
-
+            # go to next word and delete entry text
             self._end_round(Entry_list, Label_list)
             
             # stop the game after 5 Rounds
@@ -70,9 +70,12 @@ class Game:
                 # show the evaluation of the word
                 self._show_evaluation(root)
 
+        # change the color of the player name
+        self._change_player_color(player_label_1, player_label_2)
+
         return self.guess_numb               
 
-    def _end_round(self, Entry_list, Label_list):
+    def _end_round(self, Entry_list: list, Label_list: list) -> None:
         # state normal again
         [x.configure(state="normal") for x in Entry_list]
 
@@ -86,7 +89,7 @@ class Game:
         # new random seed
         self.randint = random.randrange(0, 1000)
 
-    def _calculate_points(self, iter_label, score_label_1, score_label_2):
+    def _calculate_points(self, iter_label: Label, score_label_1: Label, score_label_2: Label) -> None:
             # add to round
             self.iter += 0.5
 
@@ -116,15 +119,16 @@ class Game:
                     # next player
                     self.player = 1
 
-    def _end_game(self, root):
+    def _end_game(self, root: Tk) -> None:
         # clear canvas
             for element in root.winfo_children():
                 element.destroy()
+
             # Print the result
             end_label = Label(root, text=f'Ergebnis: {self.points_1}:{self.points_2}', font=("Times 40"), bg="#333333", width=20, height=1)
             end_label.pack(anchor="center")
 
-    def _build_word(self, Entry_list):
+    def _build_word(self, Entry_list: list) -> None:
         # iterate through every entry object in row
             for l in range(0, 5):
                 # if entry is not empty
@@ -134,21 +138,25 @@ class Game:
             # save word
             self.word = "".join(self.row_chars)
     
-    def _check_word(self):
-        occurrence_list = []
+    def _check_word(self) -> list:
+        occurrence_list = [None] * 5
 
         # find goal word
         self.goal_word = self.wordle_duden[self.randint]
 
         for i in range(0, 5):
+            # get all occurances of the char
+            char_occ_list = [occ.start() for occ in re.finditer(self.word[i], self.goal_word)]
+
             # correct position and char
             if self.word[i] == self.goal_word[i]:
-                occurrence_list.append(2)
-            # correct char
-            elif self.word[i] in self.goal_word:
-                occurrence_list.append(1)
+                occurrence_list[i] = 2
+
+            # correct char and the char is not green yet
+            elif self.word[i] in self.goal_word and [occurrence_list[i] for i in char_occ_list].count(2) < len(char_occ_list):
+                occurrence_list[i] = 1
             else:
-                occurrence_list.append(0)
+                occurrence_list[i] = 0
 
         return occurrence_list
     
@@ -166,23 +174,32 @@ class Game:
         # if the correct word is guessed
         if self.hits == [2, 2, 2, 2, 2]:
             # print message
-            self.mess_label = Label(root, text="Korrekt!", font=("Times 40"), bg="#333333", width=8, height=1)
+            self.mess_label = Label(root, text="Korrekt!", font=("Times 40"), bg="#333333", width=12, height=1)
             self.mess_label.grid(row=7, column=4)
 
         # if the word is wrong and its the last try
         elif self.guess_numb == 5:
             # print the word
-            self.mess_label = Label(root, text=f'Falsch! Das Wort ist: {self.goal_word}', font=("Times 40"), bg="#333333", width=30, height=1)
+            self.mess_label = Label(root, text=f'Leider falsch! Das Wort ist: {self.goal_word}', font=("Times 40"), bg="#333333", width=30, height=1)
             self.mess_label.grid(row=7, column=4)
 
         # if the word is wrong
         else:
             # print fail message
-            self.mess_label = Label(root, text="Falsch!", font=("Times 40"), bg="#333333", width=8, height=1)
+            self.mess_label = Label(root, text=" Leider falsch!", font=("Times 40"), bg="#333333", width=12, height=1)
             self.mess_label.grid(row=7, column=4)
         
         # add to guess_numb
         self.guess_numb += 1
+
+    def _change_player_color(self, player_label_1: Label, player_label_2: Label):
+        if self.player == 1:
+            player_label_1.configure(fg = "#2ca115")
+            player_label_2.configure(fg = "#fff")
+        else:
+            player_label_2.configure(fg = "#2ca115")
+            player_label_1.configure(fg = "#fff")
+
 
     
 
