@@ -28,3 +28,5 @@ with open("wordle_duden.json", "w") as duden:
 [] * 2
 
 # %%
+"H".isupper()
+# %%

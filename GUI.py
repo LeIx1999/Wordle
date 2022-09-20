@@ -46,9 +46,9 @@ main_frame.grid(row=4, column=4)
 second_frame = Frame(root, padx=100, pady=100)
 second_frame.grid(row=5, column=4)
 
-# Make sure only one letter is entered
+# Make sure only one letter is entered and nothing is uppercase
 def validate_characters(chars):
-    if len(chars) >1:
+    if len(chars) >1 and chars.isupper():
         return False
     else:
         return True

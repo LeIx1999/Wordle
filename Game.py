@@ -37,6 +37,10 @@ class Game:
     def enter_word(self, Entry_list: list, Label_list: list, iter_label: Label, score_label_1: Label, score_label_2: Label, player_label_1: Label, player_label_2: Label,root: Tk) -> int: 
         self.row_chars = []
 
+        # clear mess_label
+        if self.guess_numb != 0:
+            self.mess_label.destroy()
+
         # check if the word was correct or there are no guesses left
         if self.hits == [2, 2, 2, 2, 2] or self.guess_numb == 6:
             # go to next word and delete entry text
@@ -53,9 +57,10 @@ class Game:
 
             # delete message label
             self.mess_label.destroy()
+              
 
         # check if there are guesses left
-        if self.guess_numb <= 5:
+        else:
             # build a word out of every char in the Entry_list
             self._build_word(Entry_list)
 
@@ -146,14 +151,17 @@ class Game:
 
         for i in range(0, 5):
             # get all occurances of the char
-            char_occ_list = [occ.start() for occ in re.finditer(self.word[i], self.goal_word)]
+            char_goal_occ = [occ.start() for occ in re.finditer(self.word[i], self.goal_word)]
+            # correct_chars = [occurrence_list[l] for l in char_goal_occ].count(2)
+
+            # char_word_occ = [[occ.start() for occ in re.finditer(self.word[i], self.word)]]
 
             # correct position and char
             if self.word[i] == self.goal_word[i]:
                 occurrence_list[i] = 2
 
             # correct char and the char is not green yet
-            elif self.word[i] in self.goal_word and [occurrence_list[i] for i in char_occ_list].count(2) < len(char_occ_list):
+            elif self.word[i] in self.goal_word and self.word[:i+1].count(self.word[i]) <= len(char_goal_occ):
                 occurrence_list[i] = 1
             else:
                 occurrence_list[i] = 0
