@@ -11,7 +11,7 @@ Game = Game.Game()
 # create root
 root = Tk()
 root.title("Wordle")
-root.geometry("1200x1200")
+root.geometry("1000x1000")
 
 # set icon
 root.iconbitmap("earth.ico")
@@ -39,11 +39,11 @@ iter_label = Label(root, text=f'Runde: {Game.iter}', font=("Times 40"), bg="#333
 iter_label.grid(row=2, column=4)
 
 # Mainframe
-main_frame = Frame(root, padx=50, pady=50)
+main_frame = Frame(root, padx=50, pady=0)
 main_frame.grid(row=4, column=4)
 
 # Secondframe
-second_frame = Frame(root, padx=100, pady=100)
+second_frame = Frame(root, padx=100, pady=40)
 second_frame.grid(row=5, column=4)
 
 # Make sure only one letter is entered and nothing is uppercase

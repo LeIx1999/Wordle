@@ -1,0 +1,3 @@
+- Remake end of game
+- Remove white around the button
+- look for a bigger duden

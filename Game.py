@@ -33,13 +33,16 @@ class Game:
         self.color_dict = {2: "darkgreen",
                     1: "gold",
                     0: "darkred"}
+        # ineligible guess
+        self.ineligible = False
 
     def enter_word(self, Entry_list: list, Label_list: list, iter_label: Label, score_label_1: Label, score_label_2: Label, player_label_1: Label, player_label_2: Label,root: Tk) -> int: 
         self.row_chars = []
 
-        # clear mess_label
-        if self.guess_numb != 0:
+        # clear mess_label if its the second guess or the guess before was ineligible
+        if self.guess_numb != 0 or self.ineligible:
             self.mess_label.destroy()
+            self.ineligible = False
 
         # check if the word was correct or there are no guesses left
         if self.hits == [2, 2, 2, 2, 2] or self.guess_numb == 6:
@@ -74,6 +77,13 @@ class Game:
 
                 # show the evaluation of the word
                 self._show_evaluation(root)
+            
+            elif len(self.word) == 5:
+                # print that the word is not in the duden
+                self.mess_label = Label(root, text=" Das Wort ist nicht zulässig!", font=("Times 40"), bg="#333333", width=30, height=1)
+                self.mess_label.grid(row=7, column=4)
+                self.ineligible = True
+
 
         # change the color of the player name
         self._change_player_color(player_label_1, player_label_2)
